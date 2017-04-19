@@ -33,7 +33,7 @@
 #define PROBLEMTYPE MIN         // SET PROBLEM TYPE
 
 
-struct tfunctions {
+struct tprogram {
 	double (*cost)(void *);
 	void (*allocate)(void **);
 	void (*deallocate)(void **);
@@ -43,7 +43,7 @@ struct tfunctions {
 	void (*copy)(void *, void*);
 };
 
-typedef struct tfunctions tfunctions;
+typedef struct tprogram tprogram;
 
 struct tresult {
 	void *solution; // A pointer to the solution
@@ -55,8 +55,8 @@ typedef struct tresult tresult;
 
 // NTHREADS: Number of simultaneous thread. Set greater or equal to your number of cores.
 // REPETITIONS: Repetitions at each temperature
-// ITERATIONS: Number of problem runs from the beggining (could be useful to skip local optima). Set to 1 in case only one run is necessary.
-tresult annealing(int NTHREADS, int REPETITIONS, int ITERATIONS, void *F);
-void *thread_annealing(void *F);
+// ITERATIONS: Number ofoproblem runs from the beggining (could be useful to skip local optima). Set to 1 in case only one run is necessary.
+tresult annealing(int nthreads, int repetitions, int iterations, void *program);
+void *thread_annealing(void *program);
 
 #endif

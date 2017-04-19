@@ -23,7 +23,7 @@ int nivMAX;
 sem_t lsem_solution, z_solution, x_solution, y_solution, esem_solution, sem_solopt, sem_temperatura;
 int contesc_solution = 0, contlect_solution = 0;
 
-tresult annealing(int NTHREADS, int REPETITIONS, int ITERATIONS, void *F) {
+tresult annealing(int nthreads, int repetitions, int iterations, void *program) {
 
 	int I, iter; 
 	double t=0.1, k=0.9;
@@ -35,18 +35,18 @@ tresult annealing(int NTHREADS, int REPETITIONS, int ITERATIONS, void *F) {
 	gettimeofday(&hora, NULL); //time(NULL);
 	t1 = ((double)hora.tv_sec)*1000+((double)hora.tv_usec)/1000;
 
-	(* ((tfunctions *)F)->allocate)(&solution);
-	(* ((tfunctions *)F)->allocate)(&solopt);
-	(* ((tfunctions *)F)->allocate)(&solglobalopt);
+	(* ((tprogram *)program)->allocate)(&solution);
+	(* ((tprogram *)program)->allocate)(&solopt);
+	(* ((tprogram *)program)->allocate)(&solglobalopt);
 
-	for(iter=0;iter<ITERATIONS;iter++) {
+	for(iter=0;iter<iterations;iter++) {
 
 #ifdef DEBUG_ANNEALING
 		fprintf(stderr, "Iter #%d\n\n", iter);
 #endif
 		t=0.1, k=0.9;
 
-		if((thread=(pthread_t *)malloc(NTHREADS*sizeof(pthread_t)))==NULL) {
+		if((thread=(pthread_t *)malloc(nthreads*sizeof(pthread_t)))==NULL) {
 			fprintf(stderr,"No enough memory\n");
 			exit(-1);
 		}
@@ -56,19 +56,19 @@ tresult annealing(int NTHREADS, int REPETITIONS, int ITERATIONS, void *F) {
 #endif
 
 		KT = t/k;
-		kthread = pow(k,1.0/NTHREADS);
-		repMAX = REPETITIONS/NTHREADS;
+		kthread = pow(k,1.0/nthreads);
+		repMAX = repetitions/nthreads;
 		nivMAX = 1000;
 
 		/* Initial solution setup */
-		(* ((tfunctions *)F)->initial)(solution);
+		(* ((tprogram *)program)->initial)(solution);
 #ifdef DEBUG_ANNEALING
-		(* ((tfunctions *)F)->show)(solution, stdout);
+		(* ((tprogram *)program)->show)(solution, stdout);
 #endif
 
-		fcostopt = fcost = (* ((tfunctions *)F)->cost)(solution);
+		fcostopt = fcost = (* ((tprogram *)program)->cost)(solution);
 		if(!iter) fcostglobalopt = fcostopt;
-	 	(* ((tfunctions *)F)->copy)(solution, solopt);
+	 	(* ((tprogram *)program)->copy)(solution, solopt);
 #ifdef DEBUG_ANNEALING
 		fprintf(stderr,"Initial cost: %f, repMAX: %d\n", fcost, repMAX);
 #endif
@@ -105,15 +105,15 @@ tresult annealing(int NTHREADS, int REPETITIONS, int ITERATIONS, void *F) {
 
 
 		/* THREADS LAUNCH */
-		for(I=0;I<NTHREADS;I++) {
+		for(I=0;I<nthreads;I++) {
 #ifdef DEBUG_ANNEALING
 			fprintf(stderr,"Thread %d created\n", I);
 #endif
-			pthread_create (thread+I, NULL, (void *) &thread_annealing, F);
+			pthread_create (thread+I, NULL, (void *) &thread_annealing, program);
 		}
 
 		/* WAIT FOR THREADS ENDING */
-		for(I=0;I<NTHREADS;I++) {
+		for(I=0;I<nthreads;I++) {
 			pthread_join (thread[I], NULL);
 #ifdef DEBUG_ANNEALING
 			fprintf(stderr,"Thread %d finished\n", I);
@@ -131,7 +131,7 @@ tresult annealing(int NTHREADS, int REPETITIONS, int ITERATIONS, void *F) {
 		sem_destroy(&sem_temperatura);
 
 		if( (PROBLEMTYPE==MAX && fcostglobalopt<fcostopt) || (PROBLEMTYPE==MIN && fcostglobalopt>fcostopt) ) {
-			(* ((tfunctions *)F)->copy)(solopt, solglobalopt);
+			(* ((tprogram *)program)->copy)(solopt, solglobalopt);
 			fcostglobalopt = fcostopt;
 		}
 	}
@@ -140,22 +140,22 @@ tresult annealing(int NTHREADS, int REPETITIONS, int ITERATIONS, void *F) {
 	t2 = ((double)hora.tv_sec)*1000+((double)hora.tv_usec)/1000;
 	result.elapsedtime = (t2-t1)/1000;
 	result.value = fcostglobalopt;
-	(* ((tfunctions *)F)->allocate)(&result.solution);
-	(* ((tfunctions *)F)->copy)(solglobalopt,result.solution);
+	(* ((tprogram *)program)->allocate)(&result.solution);
+	(* ((tprogram *)program)->copy)(solglobalopt,result.solution);
 
 #ifdef DEBUG_ANNEALING
 	fprintf (stderr, "Tiempo: %f  Fcoste: %f  KT:%f\n", result.elapsedtime, result.value, KT);
-	(* ((tfunctions *)F)->show)(solglobalopt,stderr);
+	(* ((tprogram *)program)->show)(solglobalopt,stderr);
 #endif
 
-	(* ((tfunctions *)F)->deallocate)(&solution);
-	(* ((tfunctions *)F)->deallocate)(&solopt);
-	(* ((tfunctions *)F)->deallocate)(&solglobalopt);
+	(* ((tprogram *)program)->deallocate)(&solution);
+	(* ((tprogram *)program)->deallocate)(&solopt);
+	(* ((tprogram *)program)->deallocate)(&solglobalopt);
 
 	return result;
 } 
 
-void *thread_annealing(void *F) {
+void *thread_annealing(void *program) {
 
         int niv, rep, numero_cambios=1;
 	double delta, omega, KT_thread, uniforme;
@@ -167,15 +167,15 @@ void *thread_annealing(void *F) {
 	void *aux;   // Auxiliar solution
 	double fcostaux;
 
-	(* ((tfunctions *)F)->allocate)(&sol_thread);
-	(* ((tfunctions *)F)->allocate)(&aux);
+	(* ((tprogram *)program)->allocate)(&sol_thread);
+	(* ((tprogram *)program)->allocate)(&aux);
 
 	// Random seed, different for each thread
 	srand(time(NULL)+(unsigned int)pthread_self());
 	
 	/* Copy current to alternative solution in mutual exclusion */ 
 	sem_wait(&esem_solution);
-	(* ((tfunctions *)F)->copy)(solution, sol_thread);
+	(* ((tprogram *)program)->copy)(solution, sol_thread);
 	fcost_thread = fcost;
 	sem_post(&esem_solution);
 
@@ -205,7 +205,7 @@ void *thread_annealing(void *F) {
 			
 		if(fcost!=fcost_thread) {
 			fcost_thread = fcost;
-			(* ((tfunctions *)F)->copy)(solution, sol_thread);
+			(* ((tprogram *)program)->copy)(solution, sol_thread);
 		}
 		
 		sem_wait(&x_solution);
@@ -221,8 +221,8 @@ void *thread_annealing(void *F) {
 		for(rep=0;rep<repMAX;rep++) {
 
 			// Create new solution
-			(* ((tfunctions *)F)->create)(sol_thread, aux); 
-			fcostaux = (* ((tfunctions *)F)->cost)(aux); 
+			(* ((tprogram *)program)->create)(sol_thread, aux); 
+			fcostaux = (* ((tprogram *)program)->cost)(aux); 
 
 			// Do we use new solution or the former one
 			cambio = 0;
@@ -261,8 +261,8 @@ void *thread_annealing(void *F) {
 			sem_wait(&esem_solution);
 
 			fcost_thread = fcost = fcostaux;
-			(* ((tfunctions *)F)->copy)(aux, sol_thread);
-			(* ((tfunctions *)F)->copy)(sol_thread, solution);
+			(* ((tprogram *)program)->copy)(aux, sol_thread);
+			(* ((tprogram *)program)->copy)(sol_thread, solution);
 
 			sem_post(&esem_solution);
 			sem_wait(&y_solution);
@@ -279,11 +279,11 @@ void *thread_annealing(void *F) {
 			       	fprintf(stderr,"Fcosteopt: %f, ", fcostaux);
 #endif
 				fcostopt = fcostaux;
-				(* ((tfunctions *)F)->copy)(sol_thread, solopt);
+				(* ((tprogram *)program)->copy)(sol_thread, solopt);
 
 #ifdef DEBUG_ANNEALING
 				// Show solution
-				(* ((tfunctions *)F)->show)(solopt, stderr);
+				(* ((tprogram *)program)->show)(solopt, stderr);
 #endif
 			}	
 			sem_post(&sem_solopt);
@@ -293,8 +293,8 @@ void *thread_annealing(void *F) {
 	}
 	// If there are not changes at this temperature we stop iterating 
 
-	(* ((tfunctions *)F)->deallocate)(&sol_thread);
-	(* ((tfunctions *)F)->deallocate)(&aux);
+	(* ((tprogram *)program)->deallocate)(&sol_thread);
+	(* ((tprogram *)program)->deallocate)(&aux);
 
 
 	return NULL;

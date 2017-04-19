@@ -30,7 +30,7 @@ void copy(void *currentsolution, void *newsolution);
 
 int main(int argc, char **argv) {
 
-	tfunctions F;
+	tprogram F;
 	tresult r;
 
 	F.cost = *cost;

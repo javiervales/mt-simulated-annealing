@@ -31,7 +31,7 @@ void copy(void *currentsolution, void *newsolution);
 int main(int argc, char **argv) {
 
 	// PROBLEM PARAMETERS 
-	tfunctions F;
+	tprogram F;
 	tresult r;
 	int type, j;
 
