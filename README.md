@@ -35,7 +35,7 @@ This function <b>minimizes</b> the given problem/program (SEE NOTES BELOW TO CHA
 <ol>
 <li> nthreads: Number of simultaneous threads to use. Set it greater or equal than the available number of cores.
 <li> repetitions: Repetitions at each temperature. Increment for more exhaustive search. 
-<li> iterations: Number of independent problem runs to be performed (could be useful to set greater than 1 to skip local optima). 
+<li> iterations: Number of independent problem runs to be performed (in many cases independent runs may help to skip better local optima). 
 <li> program: A struct containing the user-provided functions to allocate, deallocate, initiate, create, evaluate cost, copy, and show program solutions.
 </ol>
 
