@@ -53,7 +53,7 @@ struct tprogram {
 };
 ```
 
-Each of these functions must be user-provided, according to the optimization problem to solve. All arguments passed as <b>void</b> are actually <b>tsolution</b>, and must be casted as such into functions' implementation. Please see below for function definitions and examples.
+Each of these functions must be user-provided, according to the optimization problem to solve. All arguments passed as <b>void</b> are actually <b>tsolution</b> (see below), and must be casted as such into functions' implementation. Please see below for function definitions and examples, and technical notes for details. 
 
 Besides, the annealing function returns a structure:
 
@@ -68,7 +68,7 @@ struct tresult {
 which contains: 
 
 <ol>
-<li> *solution: a user-defined structure with solution's variables   
+<li> *solution: a <b>tsolution</b> (see below) user-defined structure with solution's variables   
 <li> value: the cost associated to the solution
 <li> elapsedtime: the time required to find the solution (in seconds)
 </ol>
