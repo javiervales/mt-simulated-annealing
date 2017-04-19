@@ -28,12 +28,13 @@ The library provides a single function implementing the multi-threading simulate
 
 <i>tresult</i> <b>annealing</b>(<i>int NTHREADS, int REPETITIONS, int ITERATIONS, void *F</i>)
 
-
+```c
 struct tresult {
         void *solution; // A pointer to the solution
         double elapsedtime;
         double value;
 };
+```
 
 <ol>
 <li> NTHREADS: Number of simultaneous threads to use. Set it greater or equal than the available number of cores.
