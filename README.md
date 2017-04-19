@@ -27,19 +27,35 @@ THIS ALGORITHM IS REGARDED AS ONE OF THE ORIGINAL MULTI-THREADING WAYS TO IMPLEM
 The library provides a single function implementing the multi-threading simulated annealing:<br>
 
 ```c
-tresult annealing(int NTHREADS, int REPETITIONS, int ITERATIONS, void *F);
+tresult annealing(int nthreads, int repetitions, int iterations, void *program);
 ```
 
-This function <b>minimizes</b> the given problem (SEE NOTES BELOW TO CHANGE TO MAXIMIZATION), whose arguments are:
+This function <b>minimizes</b> the given problem/program (SEE NOTES BELOW TO CHANGE TO MAXIMIZATION), whose arguments are:
 
 <ol>
-<li> NTHREADS: Number of simultaneous threads to use. Set it greater or equal than the available number of cores.
-<li> REPETITIONS: Repetitions at each temperature. Increment for more exhaustive search. 
-<li> ITERATIONS: Number of independent problem runs to be performed (could be useful to set greater than 1 to skip local optima). 
-<li> F: A struct containing the user-provided functions to allocate, deallocate, initiate, create, evaluate cost, copy, and show problem solutions (SEE BELOW)
+<li> nthreads: Number of simultaneous threads to use. Set it greater or equal than the available number of cores.
+<li> repetitions: Repetitions at each temperature. Increment for more exhaustive search. 
+<li> iterations: Number of independent problem runs to be performed (could be useful to set greater than 1 to skip local optima). 
+<li> program: A struct containing the user-provided functions to allocate, deallocate, initiate, create, evaluate cost, copy, and show program solutions.
 </ol>
 
-Besides, it returns a structure:
+Program structure is declared as 
+
+```c
+struct tprogram {
+        double (*cost)(void *);
+        void (*allocate)(void **);
+        void (*deallocate)(void **);
+        void (*initial)(void *);
+        void (*show)(void *, FILE *);
+        void (*create)(void *, void *);
+        void (*copy)(void *, void*);
+};
+```
+
+Each of these functions must be user-provided, according to the optimization problem to solve. Please see below for function definitions.
+
+Besides, the annealing function returns a structure:
 
 ```c
 struct tresult {
@@ -59,16 +75,15 @@ which contains:
 
 <h2>Optimization problem definition</h2>
 
-<b>Please see provided files (sampleLP, sampleILP, sample-runtime) for examples of problem definitions.</b>
+<b>Please see provided files (sampleLP, sampleILP, sample-runtime) for examples of program definitions.</b>
 
-Optimization problem is defined by providing the following structure and functions:
+Optimization program is defined by providing the following structure and functions:
 
 ```c
 struct tsolution {
         // All the variables required to define the problem come here
 };
 ```
-
 <hr>
 
 ```c
