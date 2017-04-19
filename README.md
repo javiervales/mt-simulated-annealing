@@ -26,7 +26,7 @@ THIS ALGORITHM IS REGARDED AS ONE OF THE ORIGINAL MULTI-THREADING WAYS TO IMPLEM
 
 The library provides a single function implementing the multi-threading simulated annealing:<br>
 
-<i>tresult</i> <b>annealing(<i>int NTHREADS, int REPETITIONS, int ITERATIONS, void *F</i>)</b>
+<i>tresult</i> <b>annealing</b>(<i>int NTHREADS, int REPETITIONS, int ITERATIONS, void *F</i>)
 
 
 struct tresult {
