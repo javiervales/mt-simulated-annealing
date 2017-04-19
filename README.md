@@ -78,23 +78,50 @@ It computes the given solution's cost.
 <hr>
 
 ```c
-void allocate(void **solution);
+void create(void *currentsolution, void *newsolution) {
+
+        char constraintsfulfilled = 0;
+        
+        // Common template for this function
+        while (!constraintsfulfilled) {
+                copy(currentsolution, newsolution); // Possibly it starts by creating a copy of the current solution
+                ...
+                
+        }
+}
 ```
-```c
-void deallocate(void **solution);
-```
+It creates a new solution to be tested for the optimization problem. It receives also the current considered solution of the annealing algorithm, which the function may use to create a modified one. This function is in charge to check solution's conformity to problem's constraints, i.e. it can only submit valid solutions.
+<hr>
+
 ```c
 void initial(void *newsolution);
 ```
+
+It creates the first solution for the problem. As the previous function it can only returns a solution fulfilling all problem's constraints. 
+<hr>
+
+```c
+void allocate(void **solution);
+```
+It must allocate a solution and its components (by issuing all necessary malloc calls). It is internally called by the annealing function. 
+<hr>
+
+```c
+void deallocate(void **solution);
+```
+It must free all the resources allocated by a solution. It is internally called by the annealing function. 
+<hr>
+
+
 ```c
 void show(void *solution, FILE *F);
 ```
-```c
-void create(void *currentsolution, void *newsolution);
-```
+It displays solution at the given FILE (e.g. <i> stderr, stdout, ... </i>. 
+
 ```c
 void copy(void *currentsolution, void *newsolution);
 ```
+It copies all the internal components of a solution strcuture (currensolution) to another solution strcture (newsolution). It is internally called by the annealing function, and can be used by other problem's functions like create as shown above.
 
 <h2>Notes</h2>
 
