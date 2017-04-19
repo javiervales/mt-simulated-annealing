@@ -53,11 +53,13 @@ which contains:
 
 <ol>
 <li> *solution: a user-defined structure with solution's variables   
-<li> value: the cost associated to the solution.
+<li> value: the cost associated to the solution
 <li> elapsedtime: the time required to find the solution (in seconds)
 </ol>
 
-<h2>Usage Notes</h2>
+<h2>Optimization problem definition</h2>
+
+<h2>Notes</h2>
 
 <h3> Minimization/Maximization </h3>
 
