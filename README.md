@@ -13,7 +13,20 @@ THIS ALGORITHM IS REGARDED AS ONE OF THE ORIGINAL MULTI-THREADING WAYS TO IMPLEM
 
 <h2>Library contents</h2>
 
-The library provides function <i>tresult</i> <b>annealing(void *<i>F</i>)</b>
+The library provides function: <i>tresult</i> <b>annealing(<i>int NTHREADS, int REPETITIONS, int ITERATIONS, void *F)</b>
+
+struct tresult {
+        void *solution; // A pointer to the solution
+        double elapsedtime;
+        double value;
+};
+
+<ol>
+<li> NTHREADS: Number of simultaneous thread. Set greater or equal to your number of cores.
+<li> REPETITIONS: Repetitions at each temperature
+<li> ITERATIONS: Number of problem runs from the beggining (could be useful to skip local optima). Set to 1 in case only one run is necessary.
+<li> F: A struct containing the user-provided functions to allocate, deallocate, initiate, create, evaluate cost, copy, and show problem solutions (SEE BELOW)
+</ol>
 
 
 
