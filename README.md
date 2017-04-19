@@ -145,6 +145,8 @@ It copies all the internal components of a solution strcuture (currensolution) t
 Typically the optimization must be called by creating a correct <b>tprogram</b> structure and calling <b>annealing</b> function with that argument. For example: 
 
 ```c
+int main(int argc, char **argv) {
+        
         tprogram F;
         tresult r;
                 
@@ -163,6 +165,8 @@ Typically the optimization must be called by creating a correct <b>tprogram</b> 
         deallocate(&r.solution);
 
         return (0);
+}
+
 ```
 
 
