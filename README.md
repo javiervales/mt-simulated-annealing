@@ -11,8 +11,24 @@ a k-th root factor.
 
 THIS ALGORITHM IS REGARDED AS ONE OF THE ORIGINAL MULTI-THREADING WAYS TO IMPLEMENT SIMULATED ANNEALING
 
-<h1>USAGE</h1>
+<h2>Library contents</h2>
+
+The library provides function <it>tresult</it> <b>annealing(void *F)</b>
 
 
+
+<h2>Files provided</h2>
+
+<ul>
+<li> annealing.h: header files for the annealing function
+<li> annealing.c: implementation of the multithreading annealing
+<li> sampleLP.c: example for solving a generic Linear Program
+<li> sampleILP.c: example for solving a generic Integer Linear Program
+<li> sample-runtime.c: example for introducing problem type and parameters during run-time
+</ul>
+
+<h2>Usage Notes</h2>
+
+The core 
 
 
