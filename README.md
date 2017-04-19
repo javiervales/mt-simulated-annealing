@@ -59,6 +59,43 @@ which contains:
 
 <h2>Optimization problem definition</h2>
 
+Optimization problem is defined by providing the following structure and functions:
+
+```c
+struct tsolution {
+        // All the variables required to define the problem comes here
+};
+```
+
+<hr>
+
+```c
+double cost(void *solution); 
+```
+
+It computes the given solution's cost.
+
+<hr>
+
+```c
+void allocate(void **solution);
+```
+```c
+void deallocate(void **solution);
+```
+```c
+void initial(void *newsolution);
+```
+```c
+void show(void *solution, FILE *F);
+```
+```c
+void create(void *currentsolution, void *newsolution);
+```
+```c
+void copy(void *currentsolution, void *newsolution);
+```
+
 <h2>Notes</h2>
 
 <h3> Minimization/Maximization </h3>
