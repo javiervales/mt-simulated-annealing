@@ -140,6 +140,32 @@ void copy(void *currentsolution, void *newsolution);
 ```
 It copies all the internal components of a solution strcuture (currensolution) to another solution strcture (newsolution). It is internally called by the annealing function, and can be used by other problem's functions like create as shown above.
 
+<h2>Function usage</h2>
+
+Typically the optimization must be called by creating a correct <b>tprogram</b> structure and calling <b>annealing</b> function with that argument. For example: 
+
+```c
+        tprogram F;
+        tresult r;
+                
+        F.cost = *cost;
+        F.allocate = *allocate;
+        F.deallocate = *deallocate;
+        F.initial = *initial;
+        F.show = *show;
+        F.create = *create;
+        F.copy = *copy;
+
+        r = annealing(2, 1000, 20, &F);
+
+        printf("Sol: %f, Elapsed time: %f\n", r.value, r.elapsedtime);
+        show(r.solution, stdout);
+        deallocate(&r.solution);
+
+        return (0);
+```
+
+
 <h2>Notes</h2>
 
 <h3> Minimization/Maximization </h3>
