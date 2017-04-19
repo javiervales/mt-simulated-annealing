@@ -26,7 +26,20 @@ THIS ALGORITHM IS REGARDED AS ONE OF THE ORIGINAL MULTI-THREADING WAYS TO IMPLEM
 
 The library provides a single function implementing the multi-threading simulated annealing:<br>
 
-<i>tresult</i> <b>annealing</b>(<i>int NTHREADS, int REPETITIONS, int ITERATIONS, void *F</i>)
+```c
+tresult annealing(int NTHREADS, int REPETITIONS, int ITERATIONS, void *F);
+```
+
+This function <b>minimizes</b> the given problem (SEE NOTES BELOW TO CHANGE TO MAXIMIZATION), whose arguments are:
+
+<ol>
+<li> NTHREADS: Number of simultaneous threads to use. Set it greater or equal than the available number of cores.
+<li> REPETITIONS: Repetitions at each temperature. Increment for more exhaustive search. 
+<li> ITERATIONS: Number of independent problem runs to be performed (could be useful to set greater than 1 to skip local optima). 
+<li> F: A struct containing the user-provided functions to allocate, deallocate, initiate, create, evaluate cost, copy, and show problem solutions (SEE BELOW)
+</ol>
+
+Besides, it returns a structure:
 
 ```c
 struct tresult {
@@ -36,18 +49,46 @@ struct tresult {
 };
 ```
 
+which contains: 
+
 <ol>
-<li> NTHREADS: Number of simultaneous threads to use. Set it greater or equal than the available number of cores.
-<li> REPETITIONS: Repetitions at each temperature. Increment for more exhaustive search. 
-<li> ITERATIONS: Number of independent problem runs to be performed (could be useful to set greater than 1 to skip local optima). 
-<li> F: A struct containing the user-provided functions to allocate, deallocate, initiate, create, evaluate cost, copy, and show problem solutions (SEE BELOW)
+<li> *solution: a user-defined structure with solution's variables   
+<li> value: the cost associated to the solution.
+<li> elapsedtime: the time required to find the solution (in seconds)
 </ol>
-
-
-
 
 <h2>Usage Notes</h2>
 
-The core 
+<h3> Minimization/Maximization </h3>
+
+By default annealing seeks problem's minimum. To find maximum, you can either:
+
+<ul>
+<li> Invert cost's function result, e.g. instead of 
+
+```c
+return value;
+```
+
+use
+
+```c
+return -value;
+```
+
+and take into account that problem's final value will be also inverted. 
+
+<li> Change:
+
+```c
+#DEFINE PROBLEMTYPE MIN
+```
+
+to:
+
+```c
+#DEFINE PROBLEMTYPE MAX
+```
+</ul>
 
 
