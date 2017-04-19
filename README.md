@@ -59,6 +59,8 @@ which contains:
 
 <h2>Optimization problem definition</h2>
 
+<b>Please see provided files (sampleLP, sampleILP, sample-runtime) for examples of problem definitions.</b>
+
 Optimization problem is defined by providing the following structure and functions:
 
 ```c
