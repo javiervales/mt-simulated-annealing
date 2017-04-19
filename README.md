@@ -13,7 +13,7 @@ THIS ALGORITHM IS REGARDED AS ONE OF THE ORIGINAL MULTI-THREADING WAYS TO IMPLEM
 
 <h2>Library contents</h2>
 
-The library provides function <it>tresult</it> <b>annealing(void *F)</b>
+The library provides function <i>tresult</i> <b>annealing(void *<i>F</i>)</b>
 
 
 
