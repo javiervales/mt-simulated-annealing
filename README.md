@@ -19,7 +19,7 @@ THIS ALGORITHM IS REGARDED AS ONE OF THE ORIGINAL MULTI-THREADING WAYS TO IMPLEM
 <li> annealing.c: implementation of the multithreading annealing
 <li> sampleLP.c: example for solving a generic Linear Program
 <li> sampleILP.c: example for solving a generic Integer Linear Program
-<li> sample-runtime.c: example for introducing problem type and parameters during run-time
+<li> sample-runtime.c: example for introducing problem type (LP or ILP) and parameters at run-time
 </ul>
 
 <h2>Library contents</h2>
