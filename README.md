@@ -53,7 +53,7 @@ struct tprogram {
 };
 ```
 
-Each of these functions must be user-provided, according to the optimization problem to solve. Please see below for function definitions.
+Each of these functions must be user-provided, according to the optimization problem to solve. All arguments passed as <b>void</b> are actually <b>tsolution</b>, and must be casted as such into functions' implementation. Please see below for function definitions and examples.
 
 Besides, the annealing function returns a structure:
 
