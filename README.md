@@ -145,6 +145,20 @@ It copies all the internal components of a solution strcuture (currensolution) t
 Typically the optimization must be called by creating a correct <b>tprogram</b> structure and calling <b>annealing</b> function with that argument. For example: 
 
 ```c
+struct tsolution {
+        double x[D];
+};
+        
+typedef struct tsolution tsolution;
+        
+double cost(void *solution);
+void allocate(void **solution);
+void deallocate(void **solution);
+void initial(void *newsolution);
+void show(void *solution, FILE *F);
+void create(void *currentsolution, void *newsolution);
+void copy(void *currentsolution, void *newsolution);
+        
 int main(int argc, char **argv) {
         
         tprogram F;
@@ -167,6 +181,7 @@ int main(int argc, char **argv) {
         return (0);
 }
 
+// Program's functions come next...
 ```
 
 
