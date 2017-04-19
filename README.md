@@ -36,9 +36,9 @@ struct tresult {
 };
 
 <ol>
-<li> NTHREADS: Number of simultaneous thread. Set greater or equal to your number of cores.
-<li> REPETITIONS: Repetitions at each temperature
-<li> ITERATIONS: Number of problem runs from the beggining (could be useful to skip local optima). Set to 1 in case only one run is necessary.
+<li> NTHREADS: Number of simultaneous threads to use. Set it greater or equal than the available number of cores.
+<li> REPETITIONS: Repetitions at each temperature. Increment for more exhaustive search. 
+<li> ITERATIONS: Number of independent problem runs to be performed (could be useful to set greater than 1 to skip local optima). 
 <li> F: A struct containing the user-provided functions to allocate, deallocate, initiate, create, evaluate cost, copy, and show problem solutions (SEE BELOW)
 </ol>
 
