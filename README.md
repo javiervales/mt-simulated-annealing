@@ -63,7 +63,7 @@ Optimization problem is defined by providing the following structure and functio
 
 ```c
 struct tsolution {
-        // All the variables required to define the problem comes here
+        // All the variables required to define the problem come here
 };
 ```
 
