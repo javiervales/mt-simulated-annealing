@@ -1,9 +1,7 @@
 // SAMPLE PROBLEM FOR ANNEALING
 //
-// LINEAR PROGRAM
-//
-// min a'x, s.t. x>=0, b'x<=c, c>=0 
-// where a, b, c and its dimension D are problem parameters introduced at runtime
+// Shows how parameters dimension can be set in runtime and how multiple annealing instances can be run on the 
+// same program just by changing create function
 
 #include <annealing.h>
 
