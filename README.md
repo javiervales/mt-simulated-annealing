@@ -2,7 +2,7 @@
 A multi-threaded Simulated Annealing core in C
 
 This implementation uses a loose temperature control, where each of the k threads run a number of iterations
-with a fixed temperature and then notifies to other threads. Upon notification temperature reduces by 
+with a fixed temperature and then notifies to other threads. Upon notification, global temperature reduces by 
 a k-th root factor.
 
 <h2>Files provided</h2>
