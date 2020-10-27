@@ -1,5 +1,5 @@
 # mt-simulated-annealing
-A multi-threaded Simulated Annealing core in C
+A multi-thread Simulated Annealing core in C
 
 This implementation uses a loose temperature control, where each of the k threads run a number of iterations
 with a fixed temperature and then notifies to other threads. Upon notification, global temperature reduces by 
